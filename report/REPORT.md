@@ -270,52 +270,47 @@ Chạy 5 benchmark queries của nhóm trên implementation cá nhân của bạ
 
 === RESULTS ===
 
-Q1: Bệnh Amip ăn não lây qua đường nào và ủ bệnh bao lâu?
-Relevant: False
-Correct: False
-Answer: bệnh amip ăn não không lây từ người sang người hoặc từ người bệnh sang nước. amip naegleria thường xâm nhập vào cơ thể q...
+🔹 Q1: Bệnh Amip ăn não lây qua đường nào và ủ bệnh bao lâu?
+Relevant Top-3: False
+Correct Answer: True
+Answer: Bệnh Amip ăn não không lây từ người sang người hoặc từ người bệnh sang nước. Amip Naegleria thường xâm nhập vào cơ thể qua đường mũi khi người bệnh ti...
 
-Q2: Nguyên nhân áp xe hậu môn tái phát?
-Relevant: False
-Correct: False
-Answer: nguyên nhân áp xe hậu môn tái phát thường do việc điều trị ban đầu không triệt để, dẫn đến mủ và vi khuẩn còn sót lại tr...
+🔹 Q2: Nguyên nhân áp xe hậu môn tái phát?
+Relevant Top-3: False
+Correct Answer: False
+Answer: Nguyên nhân áp xe hậu môn tái phát thường do việc điều trị ban đầu không triệt để, dẫn đến mủ và vi khuẩn còn sót lại trong vùng hậu môn. Ngoài ra, vệ...
 
-Q3: Tam chứng Fontan áp xe gan gồm gì?
-Relevant: False
-Correct: True
-Answer: tam chứng fontan trong áp xe gan gồm ba dấu hiệu chính sau:
+🔹 Q3: Tam chứng Fontan áp xe gan gồm gì?
+Relevant Top-3: True
+Correct Answer: True
+Answer: Tam chứng Fontan áp xe gan gồm: sốt, đau hạ sườn phải và gan to....
 
-1. sốt cao kéo dài  
-2. đau vùng hạ sườn phải  
-3. gan to v...
+🔹 Q4: Alkapton niệu do gen nào?
+Relevant Top-3: False
+Correct Answer: True
+Answer: Alkapton niệu do đột biến ở gen HGD (gen hydroxyphenylpyruvate dioxygenase), gây thiếu hụt enzym homogentisate 1,2-dioxygenase, dẫn đến tích tụ acid h...
 
-Q4: Alkapton niệu do gen nào?
-Relevant: False
-Correct: False
-Answer: alkapton niệu do đột biến ở gen hgd (gen encoding enzyme homogentisate 1,2-dioxygenase) gây ra. đột biến này làm thiếu h...
+🔹 Q5: Điều trị ám ảnh sợ hãi?
+Relevant Top-3: False
+Correct Answer: True
+Answer: Điều trị ám ảnh sợ hãi có thể bao gồm nhiều phương pháp khác nhau như thôi miên, phản hồi sinh học. Ngoài ra, việc điều trị thường được kết hợp với cá...
 
-Q5: Điều trị ám ảnh sợ hãi?
-Relevant: False
-Correct: False
-Answer: điều trị ám ảnh sợ hãi có thể bao gồm nhiều phương pháp khác nhau. ngoài các phương pháp điều trị truyền thống, một số p...
-
---- SUMMARY ---
-Relevant Top-3: 0/5
-Correct Answer: 1/5
-
+=== 📈 SUMMARY ===
+Relevant Top-3: 1/5
+Correct Answer: 4/5
+Retrieval Score: 2.00/10
 ### Nhận xét
 
-- Hệ thống có hiệu suất retrieval rất thấp: 0/5 queries có chunk relevant trong top-3.
-- Điều này cho thấy vector search chưa truy xuất đúng nội dung liên quan đến câu hỏi.
+    - Kết quả cho thấy hệ thống có grounding khá tốt nhưng retrieval rất yếu.
+    - Chỉ 1/5 query có chunk relevant trong top-3, cho thấy bước retrieval chưa hiệu quả, đặc biệt với các câu hỏi có từ khóa cụ thể như “tái phát” hoặc “gen”.
+    - Tuy nhiên, agent vẫn đạt 4/5 câu trả lời đúng, chứng tỏ mô hình LLM có khả năng suy luận hoặc sử dụng kiến thức nền thay vì hoàn toàn dựa vào context → có dấu hiệu hallucination nhẹ.
+    - Trường hợp Q1, Q4, Q5 cho thấy answer đúng nhưng không dựa trên retrieved context, phản ánh pipeline RAG chưa thực sự “grounded”.
+    - Q2 thất bại hoàn toàn cả retrieval và answer, cho thấy hệ thống chưa xử lý tốt các query mang tính chi tiết.
 
-- Tuy nhiên, agent vẫn trả lời đúng 1/5 câu hỏi (Tam chứng Fontan), chứng tỏ LLM có khả năng suy luận hoặc “đoán” từ kiến thức nền, dù không có context phù hợp.
-
-- Một số câu trả lời đúng về mặt nội dung (ví dụ câu 4: gen HGD) nhưng vẫn bị đánh giá sai do không match đúng format keyword trong benchmark.
-
--> Kết luận: Pipeline hiện tại gặp vấn đề nghiêm trọng ở bước retrieval (vector search), dẫn đến việc agent không được cung cấp đúng context để trả lời.
+    -> Kết luận: Pipeline hiện tại bị lệch về phía LLM (answer đúng nhờ model) thay vì retrieval. Cần cải thiện chunking và metadata để tăng chất lượng truy xuất, đảm bảo agent thực sự dựa vào dữ liệu thay vì suy đoán.
 
 ---
-**Bao nhiêu queries trả về chunk relevant trong top-3?** 0 / 5
+**Bao nhiêu queries trả về chunk relevant trong top-3?** 1 / 5
 
 ## 7. What I Learned (5 điểm)
 
