@@ -145,9 +145,10 @@ class RecursiveChunker:
 | Cao Chí Hải | Semantic Chunking | 6.5 | Q2 precision=1.0; chunk=0.5 tạo 468 chunks coherent, giữ nguyên ý tốt với đoạn dài | Q3 fail hoàn toàn khi search≥0.5; `vi_retrieval_notes` át các file khác do cross-lingual gap | Dùng chunk=0.5 + search=0.4 + top_k=3; thêm metadata filter theo ngôn ngữ |
 | Phan Hoài Linh| Semantic Chunking | 7.0 | Giữ nguyên ý tưởng, phù hợp với đoạn dài|  Phụ thuộc vào chất lượng embedding |
 | Bùi Hữu Huấn | Recursive Character Splitting | 6.7 / 10 | - Retrieval tốt với 2/3 query đạt tối đa (Amip, Alzheimer)<br>- Chunk giữ ngữ nghĩa khá ổn (avg ~319, không quá ngắn)<br>- Grounding rất tốt (3/3 câu trả lời đúng keyword)<br>- Score distribution có phân tách (spread ~0.2) | - Fail hoàn toàn 1 query (Áp xe gan → 0/2)<br>- Metadata filter chưa hiệu quả (filter không trả kết quả)<br>- Chunk vẫn có khả năng bị cắt giữa câu (min length 25)<br>- Recall chưa ổn định giữa các domain |
+| Nguyễn Văn Đạt | Document-structure (custom) + OpenAI embeddings | 10.0 | 5/5 queries top-1 đúng expected_source (hit@5=1.00, MRR=1.00) | Chưa chứng minh hơn baseline (đang hòa); tốn chi phí/độ trễ do gọi API |
 
 **Strategy nào tốt nhất cho domain này? Tại sao?**
-Theo kết quả đánh giá (bảng `Kết Quả Của Mạc Phạm Thiên Long`), chiến lược **Document-structure Chunking** do Mạc Phạm Thiên Long lựa chọn hoạt động tốt nhất. Đặc thù tài liệu Vinmec là chia thành các phần rõ rệt (Nguyên nhân, Triệu chứng, Điều trị), chia cắt theo cấu trúc Markdown (`#`) giúp không làm rách mạch phác đồ (medical regimens), giúp RAG luôn có đủ lượng Text để trả lời trọn vẹn câu mà không lo bị cắt xén lưng chừng.
+Theo kết quả đánh giá (bảng `Kết Quả Của Mạc Phạm Thiên Long và Nguyễn Văn Đạt`), chiến lược **Document-structure Chunking** do Kết Quả Của Mạc Phạm Thiên Long và Nguyễn Văn Đạt lựa chọn hoạt động tốt nhất. Đặc thù tài liệu Vinmec là chia thành các phần rõ rệt (Nguyên nhân, Triệu chứng, Điều trị), chia cắt theo cấu trúc Markdown (`#`) giúp không làm rách mạch phác đồ (medical regimens), giúp RAG luôn có đủ lượng Text để trả lời trọn vẹn câu mà không lo bị cắt xén lưng chừng.
 
 ## 4. My Approach (10 điểm)
 
